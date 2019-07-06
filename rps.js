@@ -70,7 +70,7 @@ database.ref('game').on('value', function(snapshot){
 
 drawChoices = (choice1, choice2) => {
     if (choice1 === 'paper'){
-        $("#p1Img").attr("src", "paper.jpg")
+        $("#p1Img").attr("src", "paper.jpg");
     } else if (choice1 === 'scissors') {
         $("#p1Img").attr("src", "scissors.jpg");
     } else if (choice1 === "rock") {
@@ -142,7 +142,7 @@ evaluateRound = (p1, p2) => {
         });
         $("#theWinner").text("Player 2");
     }
-    $(".playerChoice").attr("disabled", false);
+    
     // scoreWriter();
  };
 
@@ -164,6 +164,11 @@ function scoreWriter(){
     $("#p2Losses").text('0');
     console.log("@@@@@@@@@@");
 }
+setTimeout(function(){
+    $("#p1Img").attr("src", "...");
+    $("#p2Img").attr("src", "...");
+    $(".playerChoice").attr("disabled", false);
+    }, 3000);
 }
 
 
@@ -215,3 +220,22 @@ $(document).on("click", ".playerChoice", function(){
 });
 
 
+$("#chatBar").keypress(function (e) {
+    
+    if (e.which == 13) {
+        console.log('chat time');
+        var message= $("#chatBar").val();
+        chat.update({
+            message: "Player " + playerNum + ": " + message
+        });
+        $("#chatBar").val('');
+      return false;    //<---- Add this line
+    }
+  });
+
+
+chat.on("value", function(snapshot){
+  var newMessage = $("<p></p>").text(snapshot.val().message);
+  newMessage.append("<br>");
+  $("#chatArea").append(newMessage);
+});
